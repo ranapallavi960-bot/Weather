@@ -6,8 +6,10 @@ import {
   Image,
   Keyboard,
   Pressable,
+  ScrollView,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,9 +20,10 @@ import {
   setWeatherData,
   setSearch,
 } from '../../store/slices/weatherSlice';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 //https://api.openweathermap.org/data/2.5/weather?lat=31.1471&lon=75.3412&appid=5584aad15b98f225c7d810ea20b9bb96&units=metric
-
+const AnimatedPress=Animated.createAnimatedComponent(TouchableOpacity)
 const HomeScreen = () => {
   const state = useSelector(state => state.weather);
   const dispatch = useDispatch();
@@ -76,6 +79,7 @@ const HomeScreen = () => {
       }
     } catch (error) {
       console.log('This is error:', error);
+      Alert.alert('Error',error?.message)
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -94,7 +98,7 @@ const HomeScreen = () => {
       {state.isLoading ? (
         <ActivityIndicator color="black" />
       ) : (
-        <View>
+        <ScrollView>
           <View style={styles.searchPlace}>
             <TextInput
               onChangeText={value => dispatch(setSearch(value))}
@@ -102,18 +106,25 @@ const HomeScreen = () => {
               style={styles.InputData}
               placeholder="Search"
             />
-            <Pressable
+            {state.searchKeyWord.length > 0 &&  <AnimatedPress
+            entering={FadeIn.duration(500)}
               style={styles.searchButton}
               onPress={() => search(state.searchKeyWord)}
-            >
-              <Image
+            > 
+           
+              <Animated.Image
                 style={styles.search}
+                entering={FadeIn.duration(500)}
+                // exiting={}
                 source={require('../../assets/images/search.png')}
               />
-            </Pressable>
+            </AnimatedPress>}
           </View>
           <View style={styles.mainContent}>
-            <Image style={styles.sunny} source={icon} />
+            <Animated.Image
+             style={styles.sunny}
+               entering={FadeIn.duration(500)}
+              source={icon} />
             <Text style={styles.temperature}>
               {Math.floor(state.weatherData?.main.temp)}°C
             </Text>
@@ -148,7 +159,7 @@ const HomeScreen = () => {
           {/* <Text>{state.weatherData.name}</Text>
           <Text>{state.weatherData.main.temp}</Text>
           <Text>{state.weatherData.id}</Text> */}
-        </View>
+        </ScrollView>
       )}
     </SafeAreaView>
   );

@@ -4,15 +4,17 @@ const styles = StyleSheet.create({
    container: {
       backgroundColor: "#2d92ef",
       flex: 1,
-      padding: 5
+      // padding: 5,
+      padding:20
    },
    InputData: {
       backgroundColor: "#ebfffc",
       width: "75%",
-      marginLeft: 20,
+      // marginLeft: 20,
       borderWidth: 1,
       borderRadius: 20,
-      padding:15
+      padding:15,
+      flex:1
    },
    searchButton: {
       backgroundColor: "#ebfffc",
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       gap: 10,
       alignItems: "center",
-      marginTop: 20,
+      // marginTop: 20,
    },
    sunny: {
       width: 100,
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
    weatherData: {
       flexDirection: "row",
       // width:"100%",
-      marginTop: 40,
+      marginTop: 60,
       justifyContent: "space-between",
 
    },
