@@ -13,15 +13,17 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsLoading, setWeatherData ,setSearch} from '../../store/slices/weatherSlice';
+import {
+  setIsLoading,
+  setWeatherData,
+  setSearch,
+} from '../../store/slices/weatherSlice';
 
 //https://api.openweathermap.org/data/2.5/weather?lat=31.1471&lon=75.3412&appid=5584aad15b98f225c7d810ea20b9bb96&units=metric
 
 const HomeScreen = () => {
   const state = useSelector(state => state.weather);
   const dispatch = useDispatch();
-
-
 
   const allIcons = {
     '01d': require('../../assets/images/sunny.png'),
@@ -31,7 +33,15 @@ const HomeScreen = () => {
     '09d': require('../../assets/images/rainy.png'),
     '10d': require('../../assets/images/rainy_sun.png'),
     '11d': require('../../assets/images/thunder_strom.png'),
-    '13d': require('../../assets/images/rainy.png'),
+    '13d': require('../../assets/images/snowfall.png'),
+    '01n': require('../../assets/images/black_moon.png'),
+    '02n': require('../../assets/images/cloud_hide_moon.png'),
+    '03n': require('../../assets/images/cloudy.png'),
+    '04n': require('../../assets/images/cloudy.png'),
+    '09n': require('../../assets/images/rainy.png'),
+    '10n': require('../../assets/images/moon_with_rain.png'),
+    '11n': require('../../assets/images/thunder_strom.png'),
+     '13n': require('../../assets/images/snowfall.png'),
   };
   const icon = useMemo(
     () =>
@@ -59,8 +69,8 @@ const HomeScreen = () => {
       );
       if (response.cod == 200) {
         dispatch(setWeatherData(response));
-        dispatch(setSearch(''))
-        Keyboard.dismiss()
+        dispatch(setSearch(''));
+        Keyboard.dismiss();
       } else {
         throw Error(response?.message);
       }
@@ -72,7 +82,7 @@ const HomeScreen = () => {
   };
   console.log('state:', state);
   useEffect(() => {
-    search();
+    search("mohali");
   }, []);
 
   // if(!isWeatherData){
@@ -86,23 +96,25 @@ const HomeScreen = () => {
       ) : (
         <View>
           <View style={styles.searchPlace}>
-            <TextInput 
-            onChangeText={(value)=>dispatch(setSearch(value))} 
-            value={state.searchKeyWord}
-            style={styles.InputData} 
-            placeholder="Search"
-             />
-            <Pressable style={styles.searchButton} onPress={()=>search(state.searchKeyWord)} >
+            <TextInput
+              onChangeText={value => dispatch(setSearch(value))}
+              value={state.searchKeyWord}
+              style={styles.InputData}
+              placeholder="Search"
+            />
+            <Pressable
+              style={styles.searchButton}
+              onPress={() => search(state.searchKeyWord)}
+            >
               <Image
                 style={styles.search}
                 source={require('../../assets/images/search.png')}
-                
               />
             </Pressable>
           </View>
           <View style={styles.mainContent}>
             <Image style={styles.sunny} source={icon} />
-            <Text style={styles.temperature} >
+            <Text style={styles.temperature}>
               {Math.floor(state.weatherData?.main.temp)}°C
             </Text>
             <Text style={styles.location}>{state.weatherData.name}</Text>
